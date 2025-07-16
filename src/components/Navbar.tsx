@@ -4,7 +4,6 @@ import { SearchField } from "@/components/SearchField.tsx";
 
 const Root = styled("div")(() => ({
 	display: "flex",
-	backgroundColor: "#000",
 	gap: "3rem",
 	alignItems: "center",
 }));
