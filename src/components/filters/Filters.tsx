@@ -1,9 +1,9 @@
 import { styled } from "@mui/material";
-import { AdButton } from "@/components/AdButton.tsx";
-import { CheckboxFilter } from "@/components/CheckboxFilter.tsx";
-import { FromToFilter } from "@/components/FromToFilter.tsx";
-import { InputFieldFilter } from "@/components/InputFieldFilter.tsx";
-import { SelectFilter } from "@/components/SelectFilter.tsx";
+import { CheckboxFilter } from "@/components/filters/CheckboxFilter.tsx";
+import { FromToFilter } from "@/components/filters/FromToFilter.tsx";
+import { InputFieldFilter } from "@/components/filters/InputFieldFilter.tsx";
+import { SelectFilter } from "@/components/filters/SelectFilter.tsx";
+import { AdButton } from "@/components/shared/AdButton.tsx";
 
 const Root = styled("div")(() => ({
 	color: "#fff",

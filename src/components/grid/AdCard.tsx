@@ -1,5 +1,5 @@
 import { styled, Typography } from "@mui/material";
-import { AdButton } from "@/components/AdButton.tsx";
+import { AdButton } from "@/components/shared/AdButton.tsx";
 
 const Root = styled("div")(() => ({
 	backgroundColor: "#fff",

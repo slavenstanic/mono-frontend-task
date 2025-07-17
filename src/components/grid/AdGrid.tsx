@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import { AdCard } from "@/components/AdCard.tsx";
+import { AdCard } from "@/components/grid/AdCard.tsx";
 
 const Root = styled("div")(() => ({
 	display: "flex",
