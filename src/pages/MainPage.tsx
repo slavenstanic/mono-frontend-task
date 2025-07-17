@@ -1,7 +1,7 @@
 import { styled } from "@mui/material";
-import { AdPagination } from "@/components/AdPagination.tsx";
-import { HeroSection } from "@/components/HeroSection.tsx";
-import { Navbar } from "@/components/Navbar.tsx";
+import { HeroSection } from "@/components/hero/HeroSection.tsx";
+import { Navbar } from "@/components/navbar/Navbar.tsx";
+import { AdPagination } from "@/components/pagination/AdPagination.tsx";
 
 const Root = styled("div")(() => ({
 	display: "flex",

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
-import { AdGrid } from "@/components/AdGrid.tsx";
-import { Filters } from "@/components/Filters.tsx";
+import { Filters } from "@/components/filters/Filters.tsx";
+import { AdGrid } from "@/components/grid/AdGrid.tsx";
 
 const Root = styled("div")(() => ({
 	display: "flex",

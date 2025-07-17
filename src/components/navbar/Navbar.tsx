@@ -1,6 +1,6 @@
 import { styled, Typography } from "@mui/material";
-import { AdButton } from "@/components/AdButton.tsx";
-import { SearchField } from "@/components/SearchField.tsx";
+import { SearchField } from "@/components/navbar/SearchField.tsx";
+import { AdButton } from "@/components/shared/AdButton.tsx";
 
 const Root = styled("div")(() => ({
 	width: "100%",
