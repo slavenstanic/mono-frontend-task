@@ -2,11 +2,13 @@ import { Button } from "@mui/material";
 
 interface AdButtonProps {
 	content: string;
+	fullWidth?: boolean;
 }
 
-export const AdButton = ({ content }: AdButtonProps) => {
+export const AdButton = ({ content, fullWidth }: AdButtonProps) => {
 	return (
 		<Button
+			fullWidth={fullWidth}
 			variant="outlined"
 			sx={{
 				color: "#fff",
