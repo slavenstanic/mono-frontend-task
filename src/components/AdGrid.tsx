@@ -3,7 +3,7 @@ import { AdCard } from "@/components/AdCard.tsx";
 
 const Root = styled("div")(() => ({
 	display: "flex",
-	maxWidth: "60rem",
+	maxWidth: "60.25rem",
 	flexWrap: "wrap",
 	flex: "1 0 0",
 	gap: "1rem",

@@ -3,9 +3,11 @@ import { AdButton } from "@/components/AdButton.tsx";
 import { SearchField } from "@/components/SearchField.tsx";
 
 const Root = styled("div")(() => ({
+	width: "100%",
+	maxWidth: "73.9425rem",
 	display: "flex",
-	gap: "3rem",
 	alignItems: "center",
+	gap: "1rem",
 }));
 
 export const Navbar = () => {
