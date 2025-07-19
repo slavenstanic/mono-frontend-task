@@ -1,6 +1,11 @@
 import { styled } from "@mui/material";
+import type { AdProps } from "@/api/hooks/fetchAds.ts";
 import { Filters } from "@/components/filters/Filters.tsx";
 import { AdGrid } from "@/components/grid/AdGrid.tsx";
+
+type HeroSectionProps = {
+	ads: AdProps[];
+};
 
 const Root = styled("div")(() => ({
 	width: "100%",
@@ -10,11 +15,11 @@ const Root = styled("div")(() => ({
 	gap: "2rem",
 }));
 
-export const HeroSection = () => {
+export const HeroSection = ({ ads }: HeroSectionProps) => {
 	return (
 		<Root>
 			<Filters />
-			<AdGrid />
+			<AdGrid ads={ads} />
 		</Root>
 	);
 };

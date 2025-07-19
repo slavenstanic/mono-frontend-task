@@ -50,9 +50,14 @@ interface BackendAdProps {
 	model: BackendVehicleModelProps;
 }
 
-export const fetchAds = async (): Promise<{ ads: AdProps[] }> => {
-	const { data, error } = await supabase.from("VehicleAd").select(
-		`
+export const fetchAds = async (
+	from: number,
+	to: number,
+): Promise<{ ads: AdProps[]; count: number }> => {
+	const { data, error, count } = await supabase
+		.from("VehicleAd")
+		.select(
+			`
     id,
     title,
     engine_type,
@@ -73,7 +78,10 @@ export const fetchAds = async (): Promise<{ ads: AdProps[] }> => {
       )
     )
   `,
-	);
+			{ count: "exact" },
+		)
+		.range(from, to);
+
 	if (!data) {
 		throw new Error(error?.message);
 	}
@@ -101,5 +109,6 @@ export const fetchAds = async (): Promise<{ ads: AdProps[] }> => {
 				},
 			};
 		}),
+		count: count || 0,
 	};
 };

@@ -1,12 +1,24 @@
 import { Pagination, styled } from "@mui/material";
 
+interface AdPaginationProps {
+	disabled: boolean;
+	count: number;
+	setCurrentPage: (page: number) => void;
+}
+
 const Root = styled("div")(() => ({}));
 
-export const AdPagination = () => {
+export const AdPagination = ({
+	count,
+	setCurrentPage,
+	disabled,
+}: AdPaginationProps) => {
 	return (
 		<Root>
 			<Pagination
-				count={7}
+				disabled={disabled}
+				count={count}
+				onChange={(_, page) => setCurrentPage(page)}
 				shape={"rounded"}
 				sx={{
 					"& .MuiPaginationItem-root": {
