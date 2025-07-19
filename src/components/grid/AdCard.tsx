@@ -1,5 +1,10 @@
 import { styled, Typography } from "@mui/material";
+import type { AdProps } from "@/api/hooks/fetchAds.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
+
+interface AdCardProps {
+	ad: AdProps;
+}
 
 const Root = styled("div")(() => ({
 	backgroundColor: "#fff",
@@ -14,16 +19,21 @@ const CardBody = styled("div")(() => ({
 }));
 const CardDescription = styled("div")(() => ({}));
 
-export const AdCard = () => {
+export const AdCard = ({ ad }: AdCardProps) => {
 	return (
 		<Root>
 			<img
 				style={{
 					width: "100%",
+					height: "120px",
+					objectFit: "cover",
 					borderRadius: "0.5rem 0.5rem 0 0",
 				}}
-				src={"jpg/car.jpg"}
-				alt="car"
+				src={ad.image}
+				onError={(e) => {
+					e.currentTarget.src = "jpg/Blank.jpg";
+				}}
+				alt={"car"}
 			/>
 			<CardBody>
 				<Typography
@@ -32,18 +42,20 @@ export const AdCard = () => {
 						fontWeight: 700,
 					}}
 				>
-					Bmw m3 e92 3.0i
+					{ad.title}
 				</Typography>
 				<CardDescription>
-					<Typography>Gasoline</Typography>
-					<Typography>2009.</Typography>
-					<Typography>219.000km</Typography>
+					<Typography>{ad.model.brand.name}</Typography>
+					<Typography>{ad.model.name}</Typography>
+					<Typography>{ad.engineType}</Typography>
+					<Typography>{ad.productionYear}.</Typography>
+					<Typography>{ad.mileage}km</Typography>
 					<Typography
 						sx={{
 							fontWeight: 700,
 						}}
 					>
-						18.999€
+						{ad.price}€
 					</Typography>
 				</CardDescription>
 				<AdButton content={"Edit"} fullWidth={true} />

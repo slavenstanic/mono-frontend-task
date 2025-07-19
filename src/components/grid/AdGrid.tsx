@@ -1,4 +1,6 @@
 import { styled } from "@mui/material";
+import { useEffect, useState } from "react";
+import { type AdProps, fetchAds } from "@/api/hooks/fetchAds.ts";
 import { AdCard } from "@/components/grid/AdCard.tsx";
 
 const Root = styled("div")(() => ({
@@ -10,14 +12,25 @@ const Root = styled("div")(() => ({
 }));
 
 export const AdGrid = () => {
+	const [ads, setAds] = useState<AdProps[]>([]);
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const { ads } = await fetchAds();
+				setAds(ads);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		fetchData();
+	}, []);
+
 	return (
 		<Root>
-			<AdCard />
-			<AdCard />
-			<AdCard />
-			<AdCard />
-			<AdCard />
-			<AdCard />
+			{ads.map((ad) => (
+				<AdCard ad={ad} key={ad.id} />
+			))}
 		</Root>
 	);
 };
