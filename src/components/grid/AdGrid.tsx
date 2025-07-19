@@ -1,7 +1,10 @@
 import { styled } from "@mui/material";
-import { useEffect, useState } from "react";
-import { type AdProps, fetchAds } from "@/api/hooks/fetchAds.ts";
+import type { AdProps } from "@/api/hooks/fetchAds.ts";
 import { AdCard } from "@/components/grid/AdCard.tsx";
+
+interface AdGridProps {
+	ads: AdProps[];
+}
 
 const Root = styled("div")(() => ({
 	display: "flex",
@@ -11,21 +14,7 @@ const Root = styled("div")(() => ({
 	gap: "1rem",
 }));
 
-export const AdGrid = () => {
-	const [ads, setAds] = useState<AdProps[]>([]);
-
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const { ads } = await fetchAds();
-				setAds(ads);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchData();
-	}, []);
-
+export const AdGrid = ({ ads }: AdGridProps) => {
 	return (
 		<Root>
 			{ads.map((ad) => (
