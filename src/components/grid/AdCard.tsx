@@ -1,5 +1,5 @@
 import { styled, Typography } from "@mui/material";
-import type { AdProps } from "@/api/hooks/fetchAds.ts";
+import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 
 interface AdCardProps {

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
-import { type AdProps, fetchAds } from "@/api/hooks/fetchAds.ts";
+import { type AdProps, fetchVehicles } from "@/api/hooks/fetchVehicles.ts";
 import { HeroSection } from "@/components/hero/HeroSection.tsx";
 import { Navbar } from "@/components/navbar/Navbar.tsx";
 import { AdPagination } from "@/components/pagination/AdPagination.tsx";
@@ -25,7 +25,7 @@ export const MainPage = () => {
 	useEffect(() => {
 		const getAds = async () => {
 			try {
-				const { ads, count } = await fetchAds(from, to);
+				const { ads, count } = await fetchVehicles(from, to);
 				setAds(ads);
 				setCount(count);
 			} catch (error) {
