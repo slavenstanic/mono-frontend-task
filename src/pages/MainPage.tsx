@@ -14,7 +14,11 @@ const Root = styled("div")(() => ({
 	padding: "1rem",
 }));
 
-export const MainPage = () => {
+interface MainPageProps {
+	onEdit: (vehicle: AdProps) => void;
+}
+
+export const MainPage = ({ onEdit }: MainPageProps) => {
 	const pageSize = 5;
 	const [ads, setAds] = useState<AdProps[]>([]);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -49,10 +53,15 @@ export const MainPage = () => {
 		}
 	};
 
+	const handleEdit = (adId: string) => {
+		const vehicle = ads.find((ad) => ad.id === adId);
+		if (vehicle) onEdit(vehicle);
+	};
+
 	return (
 		<Root>
 			<Navbar />
-			<HeroSection ads={ads} onDelete={handleDelete} />
+			<HeroSection ads={ads} onDelete={handleDelete} onEdit={handleEdit} />
 			<AdPagination
 				disabled={!count}
 				count={count ? totalPages : 0}
