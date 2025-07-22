@@ -108,8 +108,17 @@ export const AddVehiclePage = () => {
 					handleChange={handleChange}
 				/>
 				<ButtonContainer>
-					<AdButton type={"submit"} fullWidth={true} content={"Add"} />
-					<AdButton fullWidth={true} content={"Cancel"} />
+					<AdButton
+						customVariant={"primary"}
+						type={"submit"}
+						fullWidth={true}
+						content={"Add"}
+					/>
+					<AdButton
+						customVariant={"primary"}
+						fullWidth={true}
+						content={"Cancel"}
+					/>
 				</ButtonContainer>
 			</form>
 		</Root>

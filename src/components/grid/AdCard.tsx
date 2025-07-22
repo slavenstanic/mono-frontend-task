@@ -4,6 +4,7 @@ import { AdButton } from "@/components/shared/AdButton.tsx";
 
 interface AdCardProps {
 	ad: AdProps;
+	onDelete: (adId: string, modelId: string, brandId: string) => void;
 }
 
 const Root = styled("div")(() => ({
@@ -19,7 +20,15 @@ const CardBody = styled("div")(() => ({
 }));
 const CardDescription = styled("div")(() => ({}));
 
-export const AdCard = ({ ad }: AdCardProps) => {
+const ButtonContainer = styled("div")(() => ({
+	display: "flex",
+	gap: "0.5rem",
+}));
+
+export const AdCard = ({ ad, onDelete }: AdCardProps) => {
+	const handleDelete = () => {
+		onDelete(ad.id, ad.model.id, ad.model.brand.id);
+	};
 	return (
 		<Root>
 			<img
@@ -58,7 +67,19 @@ export const AdCard = ({ ad }: AdCardProps) => {
 						{ad.price}€
 					</Typography>
 				</CardDescription>
-				<AdButton content={"Edit"} fullWidth={true} />
+				<ButtonContainer>
+					<AdButton
+						customVariant={"secondary"}
+						content={"Edit"}
+						fullWidth={true}
+					/>
+					<AdButton
+						customVariant={"delete"}
+						content={"Delete"}
+						fullWidth={true}
+						onClick={handleDelete}
+					/>
+				</ButtonContainer>
 			</CardBody>
 		</Root>
 	);

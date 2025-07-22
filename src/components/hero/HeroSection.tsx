@@ -5,6 +5,7 @@ import { AdGrid } from "@/components/grid/AdGrid.tsx";
 
 type HeroSectionProps = {
 	ads: AdProps[];
+	onDelete: (adId: string, modelId: string, brandId: string) => void;
 };
 
 const Root = styled("div")(() => ({
@@ -15,11 +16,11 @@ const Root = styled("div")(() => ({
 	gap: "2rem",
 }));
 
-export const HeroSection = ({ ads }: HeroSectionProps) => {
+export const HeroSection = ({ ads, onDelete }: HeroSectionProps) => {
 	return (
 		<Root>
 			<Filters />
-			<AdGrid ads={ads} />
+			<AdGrid ads={ads} onDelete={onDelete} />
 		</Root>
 	);
 };

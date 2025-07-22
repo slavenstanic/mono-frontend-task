@@ -26,7 +26,7 @@ export const Filters = () => {
 			<FromToFilter label1={"year"} label2={"Year"} />
 			<InputFieldFilter label1={"Mileage"} label2={"Mileage"} />
 			<InputFieldFilter label1={"Price"} label2={"Price"} />
-			<AdButton content={"Search"} />
+			<AdButton customVariant={"primary"} content={"Search"} />
 		</Root>
 	);
 };
