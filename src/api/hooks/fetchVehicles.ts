@@ -50,7 +50,7 @@ interface BackendAdProps {
 	model: BackendVehicleModelProps;
 }
 
-export const fetchAds = async (
+export const fetchVehicles = async (
 	from: number,
 	to: number,
 ): Promise<{ ads: AdProps[]; count: number }> => {

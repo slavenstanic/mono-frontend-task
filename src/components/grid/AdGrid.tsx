@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import type { AdProps } from "@/api/hooks/fetchAds.ts";
+import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
 import { AdCard } from "@/components/grid/AdCard.tsx";
 
 interface AdGridProps {
