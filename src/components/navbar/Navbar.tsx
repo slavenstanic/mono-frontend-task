@@ -25,7 +25,7 @@ export const Navbar = () => {
 				Mono
 			</Typography>
 			<SearchField />
-			<AdButton content={"Add"} />
+			<AdButton customVariant={"primary"} content={"Add"} />
 		</Root>
 	);
 };
