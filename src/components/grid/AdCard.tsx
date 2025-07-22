@@ -1,4 +1,5 @@
 import { styled, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 
@@ -73,12 +74,14 @@ export const AdCard = ({ ad, onDelete, onEdit }: AdCardProps) => {
 					</Typography>
 				</CardDescription>
 				<ButtonContainer>
-					<AdButton
-						onClick={handleEdit}
-						customVariant={"secondary"}
-						content={"Edit"}
-						fullWidth={true}
-					/>
+					<Link to={`/edit/${ad.id}`}>
+						<AdButton
+							customVariant={"secondary"}
+							content={"Edit"}
+							fullWidth={true}
+							onClick={handleEdit}
+						/>
+					</Link>
 					<AdButton
 						customVariant={"delete"}
 						content={"Delete"}

@@ -1,5 +1,6 @@
 import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { deleteVehicle } from "@/api/hooks/deleteVehicle.ts";
 import { type AdProps, fetchVehicles } from "@/api/hooks/fetchVehicles.ts";
 import { HeroSection } from "@/components/hero/HeroSection.tsx";
@@ -14,11 +15,8 @@ const Root = styled("div")(() => ({
 	padding: "1rem",
 }));
 
-interface MainPageProps {
-	onEdit: (vehicle: AdProps) => void;
-}
-
-export const MainPage = ({ onEdit }: MainPageProps) => {
+export const MainPage = () => {
+	const navigate = useNavigate();
 	const pageSize = 5;
 	const [ads, setAds] = useState<AdProps[]>([]);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -54,8 +52,7 @@ export const MainPage = ({ onEdit }: MainPageProps) => {
 	};
 
 	const handleEdit = (adId: string) => {
-		const vehicle = ads.find((ad) => ad.id === adId);
-		if (vehicle) onEdit(vehicle);
+		navigate(`/edit/${adId}`);
 	};
 
 	return (
