@@ -1,5 +1,6 @@
 import { styled } from "@mui/material";
 import { useEffect, useState } from "react";
+import { deleteVehicle } from "@/api/hooks/deleteVehicle.ts";
 import { type AdProps, fetchVehicles } from "@/api/hooks/fetchVehicles.ts";
 import { HeroSection } from "@/components/hero/HeroSection.tsx";
 import { Navbar } from "@/components/navbar/Navbar.tsx";
@@ -35,10 +36,23 @@ export const MainPage = () => {
 		void getAds();
 	}, [from, to]);
 
+	const handleDelete = async (
+		adId: string,
+		modelId: string,
+		brandId: string,
+	): Promise<void> => {
+		try {
+			await deleteVehicle({ adId, modelId, brandId });
+			setAds((prevAds) => prevAds.filter((ad) => ad.id !== adId));
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	return (
 		<Root>
 			<Navbar />
-			<HeroSection ads={ads} />
+			<HeroSection ads={ads} onDelete={handleDelete} />
 			<AdPagination
 				disabled={!count}
 				count={count ? totalPages : 0}
