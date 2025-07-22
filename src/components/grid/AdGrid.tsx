@@ -5,6 +5,7 @@ import { AdCard } from "@/components/grid/AdCard.tsx";
 interface AdGridProps {
 	ads: AdProps[];
 	onDelete: (adId: string, modelId: string, brandId: string) => void;
+	onEdit: (adId: string) => void;
 }
 
 const Root = styled("div")(() => ({
@@ -15,11 +16,11 @@ const Root = styled("div")(() => ({
 	gap: "1rem",
 }));
 
-export const AdGrid = ({ ads, onDelete }: AdGridProps) => {
+export const AdGrid = ({ ads, onDelete, onEdit }: AdGridProps) => {
 	return (
 		<Root>
 			{ads.map((ad) => (
-				<AdCard ad={ad} key={ad.id} onDelete={onDelete} />
+				<AdCard ad={ad} key={ad.id} onDelete={onDelete} onEdit={onEdit} />
 			))}
 		</Root>
 	);
