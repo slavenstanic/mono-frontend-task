@@ -1,4 +1,3 @@
-// @/api/hooks/createVehicle.ts
 import { supabase } from "@/api/supabase.ts";
 
 interface CreateVehicleProps {
