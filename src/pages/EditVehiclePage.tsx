@@ -1,6 +1,8 @@
-import { styled } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchVehicleById } from "@/api/hooks/fetchVehicleById.ts";
 import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
 import { updateVehicle } from "@/api/hooks/updateVehicle.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
@@ -12,17 +14,45 @@ const ButtonContainer = styled("div")(() => ({
 	gap: "1rem",
 }));
 
-interface EditProps {
-	vehicle: AdProps;
-	onClose: () => void;
-}
-
-export const EditVehiclePage = ({ vehicle, onClose }: EditProps) => {
-	const [form, setForm] = useState({ ...vehicle });
+export const EditVehiclePage = () => {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const [vehicle, setVehicle] = useState<AdProps | null>(null);
+	const [form, setForm] = useState({
+		title: "",
+		brand: "",
+		model: "",
+		engineType: "",
+		productionYear: "",
+		mileage: "",
+		price: "",
+		image: "",
+	});
 
 	useEffect(() => {
-		setForm({ ...vehicle });
-	}, [vehicle]);
+		const fetchData = async () => {
+			if (!id) return;
+			try {
+				const data = await fetchVehicleById(id);
+				setVehicle(data);
+				setForm({
+					title: data.title,
+					brand: data.model.brand.name,
+					model: data.model.name,
+					engineType: data.engineType,
+					productionYear: data.productionYear,
+					mileage: data.mileage.toString(),
+					price: data.price.toString(),
+					image: data.image,
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		};
+		void fetchData();
+	}, [id]);
+
+	if (!vehicle) return <Typography>Loading...</Typography>;
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setForm((prev) => ({
@@ -33,22 +63,17 @@ export const EditVehiclePage = ({ vehicle, onClose }: EditProps) => {
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		await updateVehicle({
-			adId: vehicle.id,
-			modelId: vehicle.model.id,
-			brandId: vehicle.model.brand.id,
-			vehicle: {
-				title: form.title,
-				brand: form.model.brand.name,
-				model: form.model.name,
-				engineType: form.engineType,
-				productionYear: form.productionYear,
-				mileage: form.mileage.toString(),
-				price: form.price.toString(),
-				image: form.image,
-			},
-		});
-		onClose();
+		try {
+			await updateVehicle({
+				adId: vehicle.id,
+				modelId: vehicle.model.id,
+				brandId: vehicle.model.brand.id,
+				vehicle: form,
+			});
+			navigate("/");
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
@@ -66,13 +91,13 @@ export const EditVehiclePage = ({ vehicle, onClose }: EditProps) => {
 				<InputField
 					name="brand"
 					label="Brand"
-					value={form.model.brand.name}
+					value={form.brand}
 					handleChange={handleChange}
 				/>
 				<InputField
 					name="model"
 					label="Model"
-					value={form.model.name}
+					value={form.model}
 					handleChange={handleChange}
 				/>
 				<InputField
@@ -90,13 +115,13 @@ export const EditVehiclePage = ({ vehicle, onClose }: EditProps) => {
 				<InputField
 					name="mileage"
 					label="Mileage"
-					value={form.mileage.toString()}
+					value={form.mileage}
 					handleChange={handleChange}
 				/>
 				<InputField
 					name="price"
 					label="Price"
-					value={form.price.toString()}
+					value={form.price}
 					handleChange={handleChange}
 				/>
 				<InputField
@@ -116,7 +141,7 @@ export const EditVehiclePage = ({ vehicle, onClose }: EditProps) => {
 						customVariant="primary"
 						fullWidth
 						content="Cancel"
-						onClick={onClose}
+						onClick={() => navigate("/")}
 					/>
 				</ButtonContainer>
 			</form>
