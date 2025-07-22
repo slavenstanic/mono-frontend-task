@@ -1,6 +1,7 @@
 import { styled } from "@mui/material";
 import type React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createVehicle } from "@/api/hooks/createVehicle.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 import { InputField } from "@/components/shared/InputField.tsx";
@@ -12,6 +13,7 @@ const ButtonContainer = styled("div")(() => ({
 }));
 
 export const AddVehiclePage = () => {
+	const navigate = useNavigate();
 	const [vehicle, setVehicle] = useState({
 		title: "",
 		brand: "",
@@ -44,6 +46,7 @@ export const AddVehiclePage = () => {
 				price: "",
 				image: "",
 			});
+			navigate("/");
 		} catch (error) {
 			console.error(error);
 		}
@@ -118,6 +121,7 @@ export const AddVehiclePage = () => {
 						customVariant={"primary"}
 						fullWidth={true}
 						content={"Cancel"}
+						onClick={() => navigate("/")}
 					/>
 				</ButtonContainer>
 			</form>

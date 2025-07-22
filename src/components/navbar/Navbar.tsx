@@ -1,4 +1,5 @@
 import { styled, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { SearchField } from "@/components/navbar/SearchField.tsx";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 
@@ -25,7 +26,9 @@ export const Navbar = () => {
 				Mono
 			</Typography>
 			<SearchField />
-			<AdButton customVariant={"primary"} content={"Add"} />
+			<Link to="/add">
+				<AdButton customVariant="primary" content="Add" />
+			</Link>
 		</Root>
 	);
 };
