@@ -7,7 +7,16 @@ type HeroSectionProps = {
 	ads: AdProps[];
 	onDelete: (adId: string, modelId: string, brandId: string) => void;
 	onEdit: (adId: string) => void;
-	onApplyFilters: (filters: { engineTypes: string[] }) => void;
+	onApplyFilters: (filters: {
+		engineTypes: string[];
+		priceMin?: number;
+		priceMax?: number;
+	}) => void;
+	initialFilters: {
+		engineTypes: string[];
+		priceMin?: number;
+		priceMax?: number;
+	};
 };
 
 const Root = styled("div")(() => ({
@@ -23,10 +32,11 @@ export const HeroSection = ({
 	onDelete,
 	onEdit,
 	onApplyFilters,
+	initialFilters,
 }: HeroSectionProps) => {
 	return (
 		<Root>
-			<Filters onApply={onApplyFilters} />
+			<Filters onApply={onApplyFilters} initialFilters={initialFilters} />
 			<AdGrid ads={ads} onDelete={onDelete} onEdit={onEdit} />
 		</Root>
 	);

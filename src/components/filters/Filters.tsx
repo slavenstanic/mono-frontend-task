@@ -10,6 +10,11 @@ interface FiltersProps {
 		priceMin?: number;
 		priceMax?: number;
 	}) => void;
+	initialFilters: {
+		engineTypes: string[];
+		priceMin?: number;
+		priceMax?: number;
+	};
 }
 
 const Root = styled("div")(() => ({
@@ -19,9 +24,15 @@ const Root = styled("div")(() => ({
 	gap: "2rem",
 }));
 
-export const Filters = ({ onApply }: FiltersProps) => {
-	const [engineTypes, setEngineTypes] = useState<string[]>([]);
-	const [priceRange, setPriceRange] = useState<[number, number]>([0, 100000]);
+export const Filters = ({ onApply, initialFilters }: FiltersProps) => {
+	const [engineTypes, setEngineTypes] = useState<string[]>(
+		initialFilters.engineTypes || [],
+	);
+
+	const [priceRange, setPriceRange] = useState<[number, number]>([
+		initialFilters.priceMin ?? 0,
+		initialFilters.priceMax ?? 100000,
+	]);
 
 	const handleEngineChange = (value: string, checked: boolean) => {
 		setEngineTypes((prev) =>
@@ -30,11 +41,13 @@ export const Filters = ({ onApply }: FiltersProps) => {
 	};
 
 	const handleApply = () => {
-		onApply({
+		const currentFilters = {
 			engineTypes,
 			priceMin: priceRange[0],
 			priceMax: priceRange[1],
-		});
+		};
+		localStorage.setItem("filters", JSON.stringify(currentFilters));
+		onApply(currentFilters);
 	};
 
 	return (
@@ -48,9 +61,9 @@ export const Filters = ({ onApply }: FiltersProps) => {
 			/>
 			<SliderFilter value={priceRange} onChange={setPriceRange} />
 			<AdButton
-				onClick={() => handleApply()}
-				customVariant={"primary"}
-				content={"Search"}
+				onClick={handleApply}
+				customVariant="primary"
+				content="Search"
 			/>
 		</Root>
 	);

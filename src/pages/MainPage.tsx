@@ -25,8 +25,16 @@ export const MainPage = () => {
 	const to = from + pageSize - 1;
 	const totalPages = Math.ceil(count / pageSize);
 
-	const [filters, setFilters] = useState<{ engineTypes: string[] }>({
-		engineTypes: [],
+	const [filters, setFilters] = useState(() => {
+		const stored = localStorage.getItem("filters");
+		if (stored) {
+			try {
+				return JSON.parse(stored);
+			} catch {
+				return { engineTypes: [] };
+			}
+		}
+		return { engineTypes: [] };
 	});
 
 	useEffect(() => {
@@ -64,6 +72,7 @@ export const MainPage = () => {
 			<Navbar />
 			<HeroSection
 				onApplyFilters={setFilters}
+				initialFilters={filters}
 				ads={ads}
 				onDelete={handleDelete}
 				onEdit={handleEdit}
