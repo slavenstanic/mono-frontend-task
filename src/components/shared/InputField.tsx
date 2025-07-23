@@ -1,10 +1,11 @@
 import { TextField } from "@mui/material";
+import type React from "react";
 
 interface InputFieldProps {
 	name: string;
 	label: string;
 	value: string;
-	handleChange: (event: any) => void;
+	handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const InputField = ({

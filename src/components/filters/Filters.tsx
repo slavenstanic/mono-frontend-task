@@ -1,21 +1,14 @@
 import { styled } from "@mui/material";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { CheckboxFilter } from "@/components/filters/CheckboxFilter.tsx";
 import { SliderFilter } from "@/components/filters/SliderFilter.tsx";
 import { AdButton } from "@/components/shared/AdButton.tsx";
-
-interface FiltersProps {
-	onApply: (filters: {
-		engineTypes: string[];
-		priceMin?: number;
-		priceMax?: number;
-	}) => void;
-	initialFilters: {
-		engineTypes: string[];
-		priceMin?: number;
-		priceMax?: number;
-	};
-}
+import {
+	applyFilters,
+	setEngineType,
+	setPriceRange,
+} from "@/store/slices/filtersSlice.ts";
+import type { RootState } from "@/store/store.ts";
 
 const Root = styled("div")(() => ({
 	color: "#fff",
@@ -24,30 +17,26 @@ const Root = styled("div")(() => ({
 	gap: "2rem",
 }));
 
-export const Filters = ({ onApply, initialFilters }: FiltersProps) => {
-	const [engineTypes, setEngineTypes] = useState<string[]>(
-		initialFilters.engineTypes || [],
-	);
-
-	const [priceRange, setPriceRange] = useState<[number, number]>([
-		initialFilters.priceMin ?? 0,
-		initialFilters.priceMax ?? 100000,
-	]);
+export const Filters = ({
+	onApply,
+}: {
+	onApply: (filters: {
+		engineTypes: string[];
+		priceMin?: number;
+		priceMax?: number;
+	}) => void;
+}) => {
+	const dispatch = useDispatch();
+	const filters = useSelector((state: RootState) => state.filters);
 
 	const handleEngineChange = (value: string, checked: boolean) => {
-		setEngineTypes((prev) =>
-			checked ? [...prev, value] : prev.filter((v) => v !== value),
-		);
+		dispatch(setEngineType({ type: value, checked }));
 	};
 
 	const handleApply = () => {
-		const currentFilters = {
-			engineTypes,
-			priceMin: priceRange[0],
-			priceMax: priceRange[1],
-		};
-		localStorage.setItem("filters", JSON.stringify(currentFilters));
-		onApply(currentFilters);
+		dispatch(applyFilters());
+		localStorage.setItem("filters", JSON.stringify(filters));
+		onApply(filters);
 	};
 
 	return (
@@ -56,10 +45,13 @@ export const Filters = ({ onApply, initialFilters }: FiltersProps) => {
 				title="Engine"
 				label1="Gasoline"
 				label2="Diesel"
-				values={engineTypes}
+				values={filters.engineTypes}
 				onChange={handleEngineChange}
 			/>
-			<SliderFilter value={priceRange} onChange={setPriceRange} />
+			<SliderFilter
+				value={[filters.priceMin ?? 0, filters.priceMax ?? 100000]}
+				onChange={(v) => dispatch(setPriceRange(v))}
+			/>
 			<AdButton
 				onClick={handleApply}
 				customVariant="primary"

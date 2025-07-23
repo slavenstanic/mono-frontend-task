@@ -1,10 +1,12 @@
 import { styled } from "@mui/material";
 import type React from "react";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createVehicle } from "@/api/hooks/createVehicle.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 import { InputField } from "@/components/shared/InputField.tsx";
+import { resetForm, updateField } from "@/store/slices/vehicleFormSlice.ts";
+import type { RootState } from "@/store/store.ts";
 
 const Root = styled("div")(() => ({}));
 const ButtonContainer = styled("div")(() => ({
@@ -13,114 +15,49 @@ const ButtonContainer = styled("div")(() => ({
 }));
 
 export const AddVehiclePage = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const [vehicle, setVehicle] = useState({
-		title: "",
-		brand: "",
-		model: "",
-		engineType: "",
-		productionYear: "",
-		mileage: "",
-		price: "",
-		image: "",
-	});
+	const vehicle = useSelector((state: RootState) => state.vehicleForm);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setVehicle((prev) => ({
-			...prev,
-			[event.target.name]: event.target.value,
-		}));
+		dispatch(
+			updateField({ name: event.target.name, value: event.target.value }),
+		);
 	};
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-		try {
-			await createVehicle(vehicle);
-			setVehicle({
-				title: "",
-				brand: "",
-				model: "",
-				engineType: "",
-				productionYear: "",
-				mileage: "",
-				price: "",
-				image: "",
-			});
-			navigate("/");
-		} catch (error) {
-			console.error(error);
-		}
+		await createVehicle(vehicle);
+		dispatch(resetForm());
+		navigate("/");
 	};
 
 	return (
 		<Root>
 			<form
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					gap: "2rem",
-				}}
+				style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
 				onSubmit={handleSubmit}
 			>
-				<InputField
-					name="title"
-					label="Title:"
-					value={vehicle.title}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="brand"
-					label="Brand:"
-					value={vehicle.brand}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="model"
-					label="Model:"
-					value={vehicle.model}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="engineType"
-					label="Engine Type:"
-					value={vehicle.engineType}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="productionYear"
-					label="Year of Production:"
-					value={vehicle.productionYear}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="mileage"
-					label="Mileage:"
-					value={vehicle.mileage}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="price"
-					label="Price:"
-					value={vehicle.price}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="image"
-					label="Image URL:"
-					value={vehicle.image}
-					handleChange={handleChange}
-				/>
+				{Object.entries(vehicle).map(([key, value]) => (
+					<InputField
+						key={key}
+						name={key}
+						label={key.charAt(0) + key.slice(1)}
+						value={value}
+						handleChange={handleChange}
+					/>
+				))}
 				<ButtonContainer>
 					<AdButton
-						customVariant={"primary"}
-						type={"submit"}
-						fullWidth={true}
-						content={"Add"}
+						customVariant="primary"
+						type="submit"
+						fullWidth
+						content="Add"
 					/>
 					<AdButton
-						customVariant={"primary"}
-						fullWidth={true}
-						content={"Cancel"}
+						customVariant="primary"
+						fullWidth
+						content="Cancel"
 						onClick={() => navigate("/")}
 					/>
 				</ButtonContainer>
