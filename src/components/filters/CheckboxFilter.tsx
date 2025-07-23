@@ -10,6 +10,8 @@ interface CheckboxFilterProps {
 	title: string;
 	label1: string;
 	label2: string;
+	values: string[];
+	onChange: (value: string, checked: boolean) => void;
 }
 
 const Root = styled("div")(() => ({}));
@@ -18,6 +20,8 @@ export const CheckboxFilter = ({
 	title,
 	label1,
 	label2,
+	values,
+	onChange,
 }: CheckboxFilterProps) => {
 	return (
 		<Root>
@@ -26,11 +30,11 @@ export const CheckboxFilter = ({
 				<FormControlLabel
 					control={
 						<Checkbox
+							checked={values.includes(label1)}
+							onChange={(e) => onChange(label1, e.target.checked)}
 							sx={{
 								color: "#fff",
-								"&.Mui-checked": {
-									color: "#F7C01D",
-								},
+								"&.Mui-checked": { color: "#F7C01D" },
 							}}
 						/>
 					}
@@ -39,11 +43,11 @@ export const CheckboxFilter = ({
 				<FormControlLabel
 					control={
 						<Checkbox
+							checked={values.includes(label2)}
+							onChange={(e) => onChange(label2, e.target.checked)}
 							sx={{
 								color: "#fff",
-								"&.Mui-checked": {
-									color: "#F7C01D",
-								},
+								"&.Mui-checked": { color: "#F7C01D" },
 							}}
 						/>
 					}

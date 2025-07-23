@@ -1,9 +1,11 @@
 import { styled } from "@mui/material";
+import { useState } from "react";
 import { CheckboxFilter } from "@/components/filters/CheckboxFilter.tsx";
-import { FromToFilter } from "@/components/filters/FromToFilter.tsx";
-import { InputFieldFilter } from "@/components/filters/InputFieldFilter.tsx";
-import { SelectFilter } from "@/components/filters/SelectFilter.tsx";
 import { AdButton } from "@/components/shared/AdButton.tsx";
+
+interface FiltersProps {
+	onApply: (filters: { engineTypes: string[] }) => void;
+}
 
 const Root = styled("div")(() => ({
 	color: "#fff",
@@ -13,20 +15,29 @@ const Root = styled("div")(() => ({
 	gap: "2rem",
 }));
 
-export const Filters = () => {
+export const Filters = ({ onApply }: FiltersProps) => {
+	const [engineTypes, setEngineTypes] = useState<string[]>([]);
+
+	const handleEngineChange = (value: string, checked: boolean) => {
+		setEngineTypes((prev) =>
+			checked ? [...prev, value] : prev.filter((v) => v !== value),
+		);
+	};
+
 	return (
 		<Root>
 			<CheckboxFilter
-				title="Ads with image only"
-				label1={"Yes"}
-				label2={"No"}
+				title="Engine"
+				label1="Gasoline"
+				label2="Diesel"
+				values={engineTypes}
+				onChange={handleEngineChange}
 			/>
-			<CheckboxFilter title="Engine" label1={"Gasoline"} label2={"Diesel"} />
-			<SelectFilter />
-			<FromToFilter label1={"year"} label2={"Year"} />
-			<InputFieldFilter label1={"Mileage"} label2={"Mileage"} />
-			<InputFieldFilter label1={"Price"} label2={"Price"} />
-			<AdButton customVariant={"primary"} content={"Search"} />
+			<AdButton
+				onClick={() => onApply({ engineTypes })}
+				customVariant={"primary"}
+				content={"Search"}
+			/>
 		</Root>
 	);
 };

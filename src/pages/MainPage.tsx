@@ -25,10 +25,14 @@ export const MainPage = () => {
 	const to = from + pageSize - 1;
 	const totalPages = Math.ceil(count / pageSize);
 
+	const [filters, setFilters] = useState<{ engineTypes: string[] }>({
+		engineTypes: [],
+	});
+
 	useEffect(() => {
 		const getAds = async () => {
 			try {
-				const { ads, count } = await fetchVehicles(from, to);
+				const { ads, count } = await fetchVehicles(from, to, filters);
 				setAds(ads);
 				setCount(count);
 			} catch (error) {
@@ -36,7 +40,7 @@ export const MainPage = () => {
 			}
 		};
 		void getAds();
-	}, [from, to]);
+	}, [from, to, filters]);
 
 	const handleDelete = async (
 		adId: string,
@@ -58,7 +62,12 @@ export const MainPage = () => {
 	return (
 		<Root>
 			<Navbar />
-			<HeroSection ads={ads} onDelete={handleDelete} onEdit={handleEdit} />
+			<HeroSection
+				onApplyFilters={setFilters}
+				ads={ads}
+				onDelete={handleDelete}
+				onEdit={handleEdit}
+			/>
 			<AdPagination
 				disabled={!count}
 				count={count ? totalPages : 0}
