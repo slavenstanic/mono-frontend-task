@@ -14,7 +14,11 @@ interface CheckboxFilterProps {
 	onChange: (value: string, checked: boolean) => void;
 }
 
-const Root = styled("div")(() => ({}));
+const Root = styled("div")(() => ({
+	display: "flex",
+	flexDirection: "column",
+	gap: "0.5rem",
+}));
 
 export const CheckboxFilter = ({
 	title,

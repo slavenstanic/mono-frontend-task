@@ -13,6 +13,7 @@ import {
 	setCount,
 	setCurrentPage,
 } from "@/store/slices/adListSlice.ts";
+import { applyFilters } from "@/store/slices/filtersSlice.ts";
 import type { RootState } from "@/store/store.ts";
 
 const Root = styled("div")(() => ({
@@ -57,14 +58,24 @@ export const MainPage = () => {
 		navigate(`/edit/${adId}`);
 	};
 
+	const handleApplyFilters = (newFilters: {
+		engineTypes: string[];
+		priceMin?: number;
+		priceMax?: number;
+		sortBy: string;
+	}) => {
+		dispatch(applyFilters());
+		localStorage.setItem("filters", JSON.stringify(newFilters));
+	};
+
 	return (
 		<Root>
 			<Navbar />
 			<HeroSection
-				onApplyFilters={() => {}}
 				ads={ads}
 				onDelete={handleDelete}
 				onEdit={handleEdit}
+				onApplyFilters={handleApplyFilters}
 			/>
 			<AdPagination
 				disabled={!count}

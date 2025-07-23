@@ -1,11 +1,15 @@
-import { Box, Slider, styled, Typography } from "@mui/material";
+import { Slider, styled, Typography } from "@mui/material";
 
 interface SliderFilterProps {
 	value: [number, number];
 	onChange: (value: [number, number]) => void;
 }
 
-const Root = styled("div")(() => ({}));
+const Root = styled("div")(() => ({
+	display: "flex",
+	flexDirection: "column",
+	gap: "0.5rem",
+}));
 
 export const SliderFilter = ({ value, onChange }: SliderFilterProps) => {
 	const handleChange = (_: Event, newValue: number | number[]) => {
@@ -16,18 +20,16 @@ export const SliderFilter = ({ value, onChange }: SliderFilterProps) => {
 
 	return (
 		<Root>
-			<Box>
-				<Typography>Price Range</Typography>
-				<Slider
-					value={value}
-					onChange={handleChange}
-					valueLabelDisplay="auto"
-					min={0}
-					max={100000}
-					step={1000}
-					sx={{ color: "#F7C01D" }}
-				/>
-			</Box>
+			<Typography>Price Range</Typography>
+			<Slider
+				value={value}
+				onChange={handleChange}
+				valueLabelDisplay="auto"
+				min={0}
+				max={100000}
+				step={1000}
+				sx={{ color: "#F7C01D" }}
+			/>
 		</Root>
 	);
 };
