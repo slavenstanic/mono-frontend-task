@@ -53,8 +53,14 @@ interface BackendAdProps {
 export const fetchVehicles = async (
 	from: number,
 	to: number,
+	filters?: {
+		withImage?: boolean;
+		engineTypes?: string[];
+		priceMin?: number;
+		priceMax?: number;
+	},
 ): Promise<{ ads: AdProps[]; count: number }> => {
-	const { data, error, count } = await supabase
+	let query = supabase
 		.from("VehicleAd")
 		.select(
 			`
@@ -82,9 +88,22 @@ export const fetchVehicles = async (
 		)
 		.range(from, to);
 
-	if (!data) {
-		throw new Error(error?.message);
+	if (filters?.engineTypes?.length) {
+		query = query.in("engine_type", filters.engineTypes);
 	}
+
+	if (filters?.priceMin !== undefined) {
+		query = query.gte("price", filters.priceMin);
+	}
+
+	if (filters?.priceMax !== undefined) {
+		query = query.lte("price", filters.priceMax);
+	}
+
+	const { data, error, count } = await query;
+
+	if (!data) throw new Error(error?.message);
+
 	return {
 		// @ts-ignore --> supabase gives false array type!
 		ads: data.map((vehicle: BackendAdProps) => {
