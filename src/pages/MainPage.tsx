@@ -1,11 +1,19 @@
 import { styled } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteVehicle } from "@/api/hooks/deleteVehicle.ts";
-import { type AdProps, fetchVehicles } from "@/api/hooks/fetchVehicles.ts";
+import { fetchVehicles } from "@/api/hooks/fetchVehicles.ts";
 import { HeroSection } from "@/components/hero/HeroSection.tsx";
 import { Navbar } from "@/components/navbar/Navbar.tsx";
 import { AdPagination } from "@/components/pagination/AdPagination.tsx";
+import {
+	deleteAd,
+	setAds,
+	setCount,
+	setCurrentPage,
+} from "@/store/slices/adListSlice.ts";
+import type { RootState } from "@/store/store.ts";
 
 const Root = styled("div")(() => ({
 	display: "flex",
@@ -16,51 +24,33 @@ const Root = styled("div")(() => ({
 }));
 
 export const MainPage = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const { ads, count, currentPage } = useSelector(
+		(state: RootState) => state.adList,
+	);
+	const filters = useSelector((state: RootState) => state.filters.applied);
 	const pageSize = 5;
-	const [ads, setAds] = useState<AdProps[]>([]);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [count, setCount] = useState(0);
 	const from = (currentPage - 1) * pageSize;
 	const to = from + pageSize - 1;
 	const totalPages = Math.ceil(count / pageSize);
 
-	const [filters, setFilters] = useState(() => {
-		const stored = localStorage.getItem("filters");
-		if (stored) {
-			try {
-				return JSON.parse(stored);
-			} catch {
-				return { engineTypes: [] };
-			}
-		}
-		return { engineTypes: [] };
-	});
-
 	useEffect(() => {
-		const getAds = async () => {
-			try {
-				const { ads, count } = await fetchVehicles(from, to, filters);
-				setAds(ads);
-				setCount(count);
-			} catch (error) {
-				console.log(error);
-			}
+		const fetch = async () => {
+			const { ads, count } = await fetchVehicles(from, to, filters);
+			dispatch(setAds(ads));
+			dispatch(setCount(count));
 		};
-		void getAds();
-	}, [from, to, filters]);
+		void fetch();
+	}, [dispatch, from, to, filters]);
 
 	const handleDelete = async (
 		adId: string,
 		modelId: string,
 		brandId: string,
-	): Promise<void> => {
-		try {
-			await deleteVehicle({ adId, modelId, brandId });
-			setAds((prevAds) => prevAds.filter((ad) => ad.id !== adId));
-		} catch (error) {
-			console.error(error);
-		}
+	) => {
+		await deleteVehicle({ adId, modelId, brandId });
+		dispatch(deleteAd(adId));
 	};
 
 	const handleEdit = (adId: string) => {
@@ -71,8 +61,7 @@ export const MainPage = () => {
 		<Root>
 			<Navbar />
 			<HeroSection
-				onApplyFilters={setFilters}
-				initialFilters={filters}
+				onApplyFilters={() => {}}
 				ads={ads}
 				onDelete={handleDelete}
 				onEdit={handleEdit}
@@ -80,7 +69,7 @@ export const MainPage = () => {
 			<AdPagination
 				disabled={!count}
 				count={count ? totalPages : 0}
-				setCurrentPage={(page) => setCurrentPage(page)}
+				setCurrentPage={(p) => dispatch(setCurrentPage(p))}
 			/>
 		</Root>
 	);

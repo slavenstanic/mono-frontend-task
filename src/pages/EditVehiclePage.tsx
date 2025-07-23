@@ -1,12 +1,14 @@
-import { styled, Typography } from "@mui/material";
+import { styled } from "@mui/material";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchVehicleById } from "@/api/hooks/fetchVehicleById.ts";
-import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
 import { updateVehicle } from "@/api/hooks/updateVehicle.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 import { InputField } from "@/components/shared/InputField.tsx";
+import { setForm, updateField } from "@/store/slices/vehicleFormSlice.ts";
+import type { RootState } from "@/store/store.ts";
 
 const Root = styled("div")(() => ({}));
 const ButtonContainer = styled("div")(() => ({
@@ -17,24 +19,14 @@ const ButtonContainer = styled("div")(() => ({
 export const EditVehiclePage = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const [vehicle, setVehicle] = useState<AdProps | null>(null);
-	const [form, setForm] = useState({
-		title: "",
-		brand: "",
-		model: "",
-		engineType: "",
-		productionYear: "",
-		mileage: "",
-		price: "",
-		image: "",
-	});
+	const dispatch = useDispatch();
+	const form = useSelector((state: RootState) => state.vehicleForm);
 
 	useEffect(() => {
-		const fetchData = async () => {
+		const fetch = async () => {
 			if (!id) return;
-			try {
-				const data = await fetchVehicleById(id);
-				setVehicle(data);
+			const data = await fetchVehicleById(id);
+			dispatch(
 				setForm({
 					title: data.title,
 					brand: data.model.brand.name,
@@ -44,36 +36,27 @@ export const EditVehiclePage = () => {
 					mileage: data.mileage.toString(),
 					price: data.price.toString(),
 					image: data.image,
-				});
-			} catch (error) {
-				console.error(error);
-			}
+				}),
+			);
 		};
-		void fetchData();
-	}, [id]);
-
-	if (!vehicle) return <Typography>Loading...</Typography>;
+		void fetch();
+	}, [dispatch, id]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setForm((prev) => ({
-			...prev,
-			[e.target.name]: e.target.value,
-		}));
+		dispatch(updateField({ name: e.target.name, value: e.target.value }));
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		try {
-			await updateVehicle({
-				adId: vehicle.id,
-				modelId: vehicle.model.id,
-				brandId: vehicle.model.brand.id,
-				vehicle: form,
-			});
-			navigate("/");
-		} catch (error) {
-			console.error(error);
-		}
+		if (!id) return;
+		const data = await fetchVehicleById(id);
+		await updateVehicle({
+			adId: data.id,
+			modelId: data.model.id,
+			brandId: data.model.brand.id,
+			vehicle: form,
+		});
+		navigate("/");
 	};
 
 	return (
@@ -82,65 +65,26 @@ export const EditVehiclePage = () => {
 				style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
 				onSubmit={handleSubmit}
 			>
-				<InputField
-					name="title"
-					label="Title"
-					value={form.title}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="brand"
-					label="Brand"
-					value={form.brand}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="model"
-					label="Model"
-					value={form.model}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="engineType"
-					label="Engine Type"
-					value={form.engineType}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="productionYear"
-					label="Production Year"
-					value={form.productionYear}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="mileage"
-					label="Mileage"
-					value={form.mileage}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="price"
-					label="Price"
-					value={form.price}
-					handleChange={handleChange}
-				/>
-				<InputField
-					name="image"
-					label="Image URL"
-					value={form.image}
-					handleChange={handleChange}
-				/>
+				{Object.entries(form).map(([key, value]) => (
+					<InputField
+						key={key}
+						name={key}
+						label={key.charAt(0) + key.slice(1)}
+						value={value}
+						handleChange={handleChange}
+					/>
+				))}
 				<ButtonContainer>
 					<AdButton
-						customVariant="primary"
 						type="submit"
-						fullWidth
 						content="Save"
+						customVariant="primary"
+						fullWidth
 					/>
 					<AdButton
+						content="Cancel"
 						customVariant="primary"
 						fullWidth
-						content="Cancel"
 						onClick={() => navigate("/")}
 					/>
 				</ButtonContainer>
