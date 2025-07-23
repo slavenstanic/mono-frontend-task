@@ -58,6 +58,7 @@ export const fetchVehicles = async (
 		engineTypes?: string[];
 		priceMin?: number;
 		priceMax?: number;
+		sortBy?: string;
 	},
 ): Promise<{ ads: AdProps[]; count: number }> => {
 	let query = supabase
@@ -98,6 +99,13 @@ export const fetchVehicles = async (
 
 	if (filters?.priceMax !== undefined) {
 		query = query.lte("price", filters.priceMax);
+	}
+
+	if (filters?.sortBy) {
+		const [column, direction] = filters.sortBy.split("_");
+		if (column === "price") {
+			query = query.order("price", { ascending: direction === "asc" });
+		}
 	}
 
 	const { data, error, count } = await query;

@@ -11,6 +11,7 @@ type HeroSectionProps = {
 		engineTypes: string[];
 		priceMin?: number;
 		priceMax?: number;
+		sortBy: string;
 	}) => void;
 };
 
