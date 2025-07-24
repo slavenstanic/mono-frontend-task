@@ -1,13 +1,12 @@
 import { styled, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { SearchField } from "@/components/navbar/SearchField.tsx";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 
 const Root = styled("div")(() => ({
 	width: "100%",
 	maxWidth: "73.9425rem",
 	display: "flex",
-	alignItems: "center",
+	justifyContent: "space-between",
 	gap: "1rem",
 }));
 
@@ -23,9 +22,8 @@ export const Navbar = () => {
 					lineHeight: "2rem",
 				}}
 			>
-				Mono
+				Mono Frontend
 			</Typography>
-			<SearchField />
 			<Link to="/add">
 				<AdButton customVariant="primary" content="Add" />
 			</Link>

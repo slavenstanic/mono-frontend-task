@@ -11,7 +11,7 @@ interface AdCardProps {
 
 const Root = styled("div")(() => ({
 	backgroundColor: "#fff",
-	width: "11.25rem",
+	width: "14.275rem",
 	borderRadius: "0.5rem",
 }));
 const CardBody = styled("div")(() => ({
@@ -40,7 +40,7 @@ export const AdCard = ({ ad, onDelete, onEdit }: AdCardProps) => {
 			<img
 				style={{
 					width: "100%",
-					height: "120px",
+					height: "10rem",
 					objectFit: "cover",
 					borderRadius: "0.5rem 0.5rem 0 0",
 				}}

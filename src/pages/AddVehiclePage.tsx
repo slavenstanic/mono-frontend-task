@@ -8,7 +8,11 @@ import { InputField } from "@/components/shared/InputField.tsx";
 import { resetForm, updateField } from "@/store/slices/vehicleFormSlice.ts";
 import type { RootState } from "@/store/store.ts";
 
-const Root = styled("div")(() => ({}));
+const Root = styled("div")(() => ({
+	display: "flex",
+	justifyContent: "center",
+	padding: "1rem",
+}));
 const ButtonContainer = styled("div")(() => ({
 	display: "flex",
 	gap: "1rem",
@@ -35,7 +39,13 @@ export const AddVehiclePage = () => {
 	return (
 		<Root>
 			<form
-				style={{ display: "flex", flexDirection: "column", gap: "2rem" }}
+				style={{
+					display: "flex",
+					flexDirection: "column",
+					gap: "2rem",
+					maxWidth: "73.9425rem",
+					width: "100%",
+				}}
 				onSubmit={handleSubmit}
 			>
 				{Object.entries(vehicle).map(([key, value]) => (

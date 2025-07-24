@@ -31,7 +31,7 @@ export const MainPage = () => {
 		(state: RootState) => state.adList,
 	);
 	const filters = useSelector((state: RootState) => state.filters.applied);
-	const pageSize = 5;
+	const pageSize = 8;
 	const from = (currentPage - 1) * pageSize;
 	const to = from + pageSize - 1;
 	const totalPages = Math.ceil(count / pageSize);
