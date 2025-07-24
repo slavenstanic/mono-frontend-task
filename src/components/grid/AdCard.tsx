@@ -46,7 +46,7 @@ export const AdCard = ({ ad, onDelete, onEdit }: AdCardProps) => {
 				}}
 				src={ad.image}
 				onError={(e) => {
-					e.currentTarget.src = "jpg/Blank.jpg";
+					e.currentTarget.src = "jpg/blank.jpg";
 				}}
 				alt={"car"}
 			/>
