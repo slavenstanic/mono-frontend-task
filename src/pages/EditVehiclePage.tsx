@@ -7,7 +7,11 @@ import { fetchVehicleById } from "@/api/services/fetchVehicleById.ts";
 import { updateVehicle } from "@/api/services/updateVehicle.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 import { InputField } from "@/components/shared/InputField.tsx";
-import { setForm, updateField } from "@/store/slices/vehicleFormSlice.ts";
+import {
+	resetForm,
+	setForm,
+	updateField,
+} from "@/store/slices/vehicleFormSlice.ts";
 import type { RootState } from "@/store/store.ts";
 
 const Root = styled("div")(() => ({
@@ -98,7 +102,10 @@ export const EditVehiclePage = () => {
 						content="Cancel"
 						customVariant="primary"
 						fullWidth
-						onClick={() => navigate("/")}
+						onClick={() => {
+							dispatch(resetForm());
+							navigate("/");
+						}}
 					/>
 				</ButtonContainer>
 			</form>
