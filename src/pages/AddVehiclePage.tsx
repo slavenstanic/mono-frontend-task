@@ -36,6 +36,9 @@ export const AddVehiclePage = () => {
 		navigate("/");
 	};
 
+	const toLabel = (str: string) =>
+		str.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase());
+
 	return (
 		<Root>
 			<form
@@ -52,7 +55,7 @@ export const AddVehiclePage = () => {
 					<InputField
 						key={key}
 						name={key}
-						label={key.charAt(0) + key.slice(1)}
+						label={`${toLabel(key)}:`}
 						value={value}
 						handleChange={handleChange}
 					/>
