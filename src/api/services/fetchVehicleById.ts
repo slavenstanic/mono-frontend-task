@@ -1,4 +1,4 @@
-import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
+import type { AdProps } from "@/api/services/fetchVehicles.ts";
 import { supabase } from "@/api/supabase.ts";
 
 interface BackendVehicleMakeProps {

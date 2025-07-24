@@ -2,7 +2,7 @@ import { styled } from "@mui/material";
 import type React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createVehicle } from "@/api/hooks/createVehicle.ts";
+import { createVehicle } from "@/api/services/createVehicle.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 import { InputField } from "@/components/shared/InputField.tsx";
 import { resetForm, updateField } from "@/store/slices/vehicleFormSlice.ts";
