@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { AdProps } from "@/api/hooks/fetchVehicles";
+import type { AdProps } from "@/api/services/fetchVehicles";
 
 interface State {
 	ads: AdProps[];

@@ -1,5 +1,5 @@
 import { styled } from "@mui/material";
-import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
+import type { AdProps } from "@/api/services/fetchVehicles.ts";
 import { Filters } from "@/components/filters/Filters.tsx";
 import { AdGrid } from "@/components/grid/AdGrid.tsx";
 

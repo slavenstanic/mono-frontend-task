@@ -1,6 +1,6 @@
 import { styled, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import type { AdProps } from "@/api/hooks/fetchVehicles.ts";
+import type { AdProps } from "@/api/services/fetchVehicles.ts";
 import { AdButton } from "@/components/shared/AdButton.tsx";
 
 interface AdCardProps {
