@@ -71,7 +71,10 @@ export const AddVehiclePage = () => {
 						customVariant="primary"
 						fullWidth
 						content="Cancel"
-						onClick={() => navigate("/")}
+						onClick={() => {
+							dispatch(resetForm());
+							navigate("/");
+						}}
 					/>
 				</ButtonContainer>
 			</form>
